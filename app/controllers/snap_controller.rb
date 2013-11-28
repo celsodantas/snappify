@@ -3,7 +3,9 @@ class SnapController < ApplicationController
   def index
     url = params[:url]
 
-    log = `/app/vendor/phantomjs/bin/phantomjs #{Rails.root}/lib/snapper.js #{url} #{file_path}`
+    phantomjs = Rails.env.development? ? 'phantomjs' : '/app/vendor/phantomjs/bin/phantomjs' 
+
+    log = `#{phantomjs} #{Rails.root}/lib/snapper.js #{url} #{file_path}`
     puts log
 
     render :text => open(file_path, "rb").read, content_type: "image/png"
